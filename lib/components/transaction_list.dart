@@ -15,17 +15,17 @@ class TransactionList extends StatelessWidget {
             builder: (ctx, constrains) {
               return Column(
                 children: [
-                  SizedBox(height: constrains.maxHeight * 0.01),
+                  SizedBox(height: 10),
                   Container(
-                    height: constrains.maxHeight * 0.3,
+                    height: constrains.maxHeight * 0.1,
                     child: Text(
                       'Nunhuma transação cadastrada!',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
-                  SizedBox(height: constrains.maxHeight * 0.01),
+                  SizedBox(height: 10),
                   Container(
-                    height: constrains.maxHeight * 0.6,
+                    height: constrains.maxHeight * 0.5,
                     child: Image.asset(
                       'assets/images/waiting.png',
                       fit: BoxFit.cover,
@@ -58,11 +58,18 @@ class TransactionList extends StatelessWidget {
                   subtitle: Text(
                     DateFormat('d MMM y').format(tr.date),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                    onPressed: () => onRemove(tr.id),
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 400
+                      ? FlatButton.icon(
+                          onPressed: () => onRemove(tr.id),
+                          icon: Icon(Icons.delete),
+                          label: Text('Excluir'),
+                          textColor: Theme.of(context).errorColor,
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () => onRemove(tr.id),
+                        ),
                 ),
               );
             },
