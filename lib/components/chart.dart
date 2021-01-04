@@ -1,7 +1,7 @@
-import 'package:expenses/components/chart_bar.dart';
-import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../models/transaction.dart';
+import 'chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransaction;
@@ -11,7 +11,7 @@ class Chart extends StatelessWidget {
   List<Map<String, Object>> get groupedTransactions {
     return List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(
-        Duration(days: index),
+        Duration(days: index),        
       );
 
       double totalSum = 0.0;
@@ -29,6 +29,7 @@ class Chart extends StatelessWidget {
       return {
         'day': DateFormat.E().format(weekDay)[0],
         'value': totalSum,
+        'date': weekDay,//DateFormat.yMd().format(weekDay),
       };
     }).reversed.toList();
   }
@@ -42,23 +43,25 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 6,
-        margin: EdgeInsets.all(20),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransactions.map((tr) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBar(
-                  label: tr['day'],
-                  value: tr['value'],
-                  percentage: _weekTotalValue == 0 ? 0 : (tr['value'] as double) / _weekTotalValue,
-                ),
-              );
-            }).toList(),
-          ),
-        ));
+      elevation: 6,
+      margin: EdgeInsets.all(20),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactions.map((tr) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: tr['day'],
+                value: tr['value'],
+                date: tr['date'],
+                percentage: _weekTotalValue == 0 ? 0 : (tr['value'] as double) / _weekTotalValue,
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
   }
 }

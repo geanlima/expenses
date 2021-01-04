@@ -1,31 +1,29 @@
-import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
+import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transaction;
+  final List<Transaction> transactions;
   final void Function(String) onRemove;
+  final List<Transaction> Function() onallTransacton;
 
-  TransactionList(this.transaction, this.onRemove);
+  TransactionList(this.transactions, {this.onRemove, this.onallTransacton});
 
   @override
   Widget build(BuildContext context) {
-    return transaction.isEmpty
+    return transactions.isEmpty
         ? LayoutBuilder(
-            builder: (ctx, constrains) {
+            builder: (ctx, constraints) {
               return Column(
-                children: [
-                  SizedBox(height: 10),
-                  Container(
-                    height: constrains.maxHeight * 0.1,
-                    child: Text(
-                      'Nunhuma transação cadastrada!',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  Text(
+                    'Nenhuma Transação Cadastrada!',                    
+                    style: Theme.of(context).textTheme.headline1,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Container(
-                    height: constrains.maxHeight * 0.5,
+                    height: constraints.maxHeight * 0.6,
                     child: Image.asset(
                       'assets/images/waiting.png',
                       fit: BoxFit.cover,
@@ -36,11 +34,15 @@ class TransactionList extends StatelessWidget {
             },
           )
         : ListView.builder(
-            itemCount: transaction.length,
+            itemCount: transactions.length,
             itemBuilder: (ctx, index) {
-              final tr = transaction[index];
+              final tr = transactions[index];
               return Card(
-                elevation: 3,
+                elevation: 5,
+                margin: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 5,
+                ),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,
@@ -53,12 +55,12 @@ class TransactionList extends StatelessWidget {
                   ),
                   title: Text(
                     tr.title,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                   subtitle: Text(
                     DateFormat('d MMM y').format(tr.date),
                   ),
-                  trailing: MediaQuery.of(context).size.width > 400
+                  trailing: MediaQuery.of(context).size.width > 480
                       ? FlatButton.icon(
                           onPressed: () => onRemove(tr.id),
                           icon: Icon(Icons.delete),
