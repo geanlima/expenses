@@ -1,5 +1,3 @@
-import 'package:expenses/components/transaction_list.dart';
-import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
@@ -8,20 +6,12 @@ class ChartBar extends StatelessWidget {
   final double percentage;
   final DateTime date;
 
-  ChartBar({this.label, this.value, this.percentage, this.date});
-
-  final List<Transaction> _transactions = [];
-
-  List<Transaction> get _dateTransactions {
-    return _transactions.where((tr) {
-      return tr.date.isAtSameMomentAs(date);      
-    }).toList();
-  }
-/*
-  List<Transaction> get _onallTransacton{
-    return _transactions.toList();
-  }
-  */
+  ChartBar({
+    this.label,
+    this.value,
+    this.percentage,
+    this.date,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,42 +28,32 @@ class ChartBar extends StatelessWidget {
               ),
             ),
             SizedBox(height: constraints.maxHeight * 0.05),
-            FlatButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (_) {
-                    return TransactionList();
-                  },
-                );
-              },
-              child: Container(
-                height: constraints.maxHeight * 0.6,
-                width: 10,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: <Widget>[
-                    Container(
+            Container(
+              height: constraints.maxHeight * 0.6,
+              width: 10,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                      color: Color.fromRGBO(220, 220, 220, 1),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  FractionallySizedBox(
+                    heightFactor: percentage,
+                    child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                        ),
-                        color: Color.fromRGBO(220, 220, 220, 1),
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    FractionallySizedBox(
-                      heightFactor: percentage,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
             SizedBox(height: constraints.maxHeight * 0.05),
